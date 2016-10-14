@@ -5,6 +5,8 @@ import android.support.v4.media.RatingCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import cn.ucai.fulicenter.utils.MFGT;
+
 public class SplashActivity extends AppCompatActivity {
     private long sleepTime=2000;
 
@@ -31,7 +33,8 @@ public class SplashActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
                         startActivity(new Intent(SplashActivity.this, MainActivity.class));
-                        finish();
+                        MFGT.gotoMainActivity(SplashActivity.this);
+                        MFGT.finish(SplashActivity.this);
                     }
                 }
 
