@@ -4,6 +4,7 @@
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
+        android:name=".FuLiCenterApplication"
         android:allowBackup="true"
         android:icon="@mipmap/launcher"
         android:label="福利社"
