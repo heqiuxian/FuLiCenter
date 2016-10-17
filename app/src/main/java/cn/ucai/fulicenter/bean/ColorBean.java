@@ -2,25 +2,28 @@ package cn.ucai.fulicenter.bean;
 
 import java.io.Serializable;
 
-/**
- * Created by Administrator on 2016/10/13.
- */
-
 public class ColorBean implements Serializable {
 
     /**
-     * colorId : 4
-     * colorName : 绿色
-     * colorCode : #59d85c
-     * colorUrl : 1
+     * catId : 262
+     * colorId : 1
+     * colorName : 灰色
+     * colorCode : #959595
+     * colorImg : 121.197.1.20/images/201309/1380064809234134935.jpg
      */
 
+    private int catId;
     private int colorId;
     private String colorName;
     private String colorCode;
-    private String colorUrl;
+    private String colorImg;
 
-    public ColorBean() {
+    public int getCatId() {
+        return catId;
+    }
+
+    public void setCatId(int catId) {
+        this.catId = catId;
     }
 
     public int getColorId() {
@@ -47,21 +50,22 @@ public class ColorBean implements Serializable {
         this.colorCode = colorCode;
     }
 
-    public String getColorUrl() {
-        return colorUrl;
+    public String getColorImg() {
+        return colorImg;
     }
 
-    public void setColorUrl(String colorUrl) {
-        this.colorUrl = colorUrl;
+    public void setColorImg(String colorImg) {
+        this.colorImg = colorImg;
     }
 
     @Override
     public String toString() {
         return "ColorBean{" +
-                "colorId=" + colorId +
+                "catId=" + catId +
+                ", colorId=" + colorId +
                 ", colorName='" + colorName + '\'' +
                 ", colorCode='" + colorCode + '\'' +
-                ", colorUrl='" + colorUrl + '\'' +
+                ", colorImg='" + colorImg + '\'' +
                 '}';
     }
 }

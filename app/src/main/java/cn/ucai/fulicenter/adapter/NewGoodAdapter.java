@@ -16,6 +16,7 @@ import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.bean.NewGoodsBean;
 import cn.ucai.fulicenter.utils.ImageLoader;
+import cn.ucai.fulicenter.utils.L;
 
 /**
  * Created by Administrator on 2016/10/17.
@@ -44,7 +45,9 @@ public class NewGoodAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if(getItemViewType(position)==I.TYPE_FOOTER){
-
+            FooterViewHolder footerViewHolder= (FooterViewHolder) holder;
+            footerViewHolder.tvFooter.setText("更多加载..");
+            L.i("nimeide");
         }else {
             GoodsViewHolder vh= (GoodsViewHolder) holder;
             NewGoodsBean goods=mGoodsList.get(position);
@@ -66,6 +69,14 @@ public class NewGoodAdapter extends RecyclerView.Adapter {
             return I.TYPE_FOOTER;
         }
         return I.TYPE_ITEM;
+    }
+
+    public void initData(ArrayList<NewGoodsBean> list) {
+        if(mGoodsList!=null){
+            mGoodsList.clear();
+        }
+        mGoodsList.addAll(list);
+        notifyDataSetChanged();
     }
 
     static class GoodsViewHolder extends RecyclerView.ViewHolder{

@@ -1,15 +1,24 @@
 package cn.ucai.fulicenter.activity;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.fragment.BoutiqueFragment;
+import cn.ucai.fulicenter.fragment.CartFragment;
+import cn.ucai.fulicenter.fragment.CategoryFragment;
+import cn.ucai.fulicenter.fragment.NewGoodFragment;
+import cn.ucai.fulicenter.fragment.PersonalFragment;
 import cn.ucai.fulicenter.utils.L;
 
 
@@ -34,7 +43,12 @@ public class MainActivity extends AppCompatActivity {
     RadioButton layoutPersonalCenter;
     @BindView(R.id.main_bottom)
     LinearLayout mainBottom;
-
+    ArrayList<Fragment> list;
+    NewGoodFragment newGoodFragment;
+    BoutiqueFragment boutiqueFragment;
+    CategoryFragment categoryFragment;
+    CartFragment cartFragment;
+    PersonalFragment personalFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +67,20 @@ public class MainActivity extends AppCompatActivity {
         rbs[3] = layoutCart;
         rbs[4] = layoutPersonalCenter;
 
+        newGoodFragment=new NewGoodFragment();
+        boutiqueFragment=new BoutiqueFragment();
+        categoryFragment=new CategoryFragment();
+        cartFragment=new CartFragment();
+        personalFragment=new PersonalFragment();
+        list=new ArrayList<>();
+        list.add(newGoodFragment);
+        list.add(boutiqueFragment);
+        list.add(categoryFragment);
+        list.add(cartFragment);
+        list.add(personalFragment);
+        //设置默认的fragment
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.add(R.id.fragment_container,newGoodFragment).show(newGoodFragment).commit();
     }
 
     public void onCheckedChange(View view) {
@@ -74,6 +102,20 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         setChecked();
+        switchFragment(index);
+    }
+    int currentIndex=0;
+    private void switchFragment(int index) {
+        if(index==currentIndex){
+            return;
+        }
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        Fragment fragment = list.get(index);
+        if(!list.get(index).isAdded()){
+            ft.add(R.id.fragment_container,fragment);
+        }
+        ft.show(fragment).hide(list.get(currentIndex)).commit();
+        currentIndex=index;
     }
 
     private void setChecked() {

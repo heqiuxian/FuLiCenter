@@ -1,31 +1,9 @@
 package cn.ucai.fulicenter.bean;
 
 import java.io.Serializable;
-import java.util.List;
-
-/**
- * Created by Administrator on 2016/10/13.
- */
+import java.util.Arrays;
 
 public class GoodsDetailsBean implements Serializable {
-
-    /**
-     * id : 731
-     * goodsId : 6895
-     * catId : 345
-     * goodsName : IRM05W 幻彩蛹 变色鼠
-     * goodsEnglishName : i-rocks 艾芮克
-     * goodsBrief : 传说中IG战队用过的鼠标（啊，别问我IG是什么鬼，真的不知道！）。提供更高的精确度及细致度，USB高速侦测模组技术。3D多彩背光DC技术，可依你喜好设定所需颜色。即插即用，无需安装任何软件。
-     * shopPrice : ￥399
-     * currencyPrice : ￥414
-     * promotePrice : ￥0
-     * rankPrice : ￥414
-     * isPromote : false
-     * goodsThumb : 201508/thumb_img/6895_thumb_G_1439355137855.jpg
-     * goodsImg : 201508/thumb_img/6895_thumb_G_1439355137855.jpg
-     * addTime : 1442419200000
-     * shareUrl : http://m.fulishe.com/item/6895
-     */
 
     private int id;
     private int goodsId;
@@ -37,32 +15,12 @@ public class GoodsDetailsBean implements Serializable {
     private String currencyPrice;
     private String promotePrice;
     private String rankPrice;
-    private boolean isPromote;
     private String goodsThumb;
     private String goodsImg;
     private long addTime;
     private String shareUrl;
-
-    private List<PropertiesBean>properties;
-
-    public GoodsDetailsBean() {
-    }
-
-    public boolean isPromote() {
-        return isPromote;
-    }
-
-    public void setPromote(boolean promote) {
-        isPromote = promote;
-    }
-
-    public List<PropertiesBean> getProperties() {
-        return properties;
-    }
-
-    public void setProperties(List<PropertiesBean> properties) {
-        this.properties = properties;
-    }
+    private boolean isPromote;
+    private PropertiesBean[] properties;
 
     public int getId() {
         return id;
@@ -144,14 +102,6 @@ public class GoodsDetailsBean implements Serializable {
         this.rankPrice = rankPrice;
     }
 
-    public boolean isIsPromote() {
-        return isPromote;
-    }
-
-    public void setIsPromote(boolean isPromote) {
-        this.isPromote = isPromote;
-    }
-
     public String getGoodsThumb() {
         return goodsThumb;
     }
@@ -184,9 +134,25 @@ public class GoodsDetailsBean implements Serializable {
         this.shareUrl = shareUrl;
     }
 
+    public boolean isPromote() {
+        return isPromote;
+    }
+
+    public void setPromote(boolean promote) {
+        this.isPromote = promote;
+    }
+
+    public PropertiesBean[] getProperties() {
+        return properties;
+    }
+
+    public void setProperties(PropertiesBean[] properties) {
+        this.properties = properties;
+    }
+
     @Override
     public String toString() {
-        return "GoodsDetailsBean{" +
+        return "GoodDetailsBean{" +
                 "id=" + id +
                 ", goodsId=" + goodsId +
                 ", catId=" + catId +
@@ -197,12 +163,12 @@ public class GoodsDetailsBean implements Serializable {
                 ", currencyPrice='" + currencyPrice + '\'' +
                 ", promotePrice='" + promotePrice + '\'' +
                 ", rankPrice='" + rankPrice + '\'' +
-                ", isPromote=" + isPromote +
                 ", goodsThumb='" + goodsThumb + '\'' +
                 ", goodsImg='" + goodsImg + '\'' +
                 ", addTime=" + addTime +
                 ", shareUrl='" + shareUrl + '\'' +
-                ", properties=" + properties +
+                ", promote=" + isPromote +
+                ", properties=" + Arrays.toString(properties) +
                 '}';
     }
 }

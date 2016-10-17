@@ -1,24 +1,9 @@
 package cn.ucai.fulicenter.bean;
 
 import java.io.Serializable;
-import java.util.List;
-
-/**
- * Created by Administrator on 2016/10/13.
- */
+import java.util.Arrays;
 
 public class PropertiesBean implements Serializable {
-
-    /**
-     * id : 8514
-     * goodsId : 0
-     * colorId : 4
-     * colorName : 绿色
-     * colorCode : #59d85c
-     * colorImg : 201309/1380064997570506166.jpg
-     * colorUrl : https://cn.shopbop.com/alexa-chung-loretta-romper-ag/vp/v=1/1573999972.htm?fm=search-shopbysize&os=false
-     * albums : [{"pid":6936,"imgId":26104,"imgUrl":"201508/goods_img/6936_P_1439535131675.png","thumbUrl":"no_picture.gif"}]
-     */
 
     private int id;
     private int goodsId;
@@ -27,19 +12,7 @@ public class PropertiesBean implements Serializable {
     private String colorCode;
     private String colorImg;
     private String colorUrl;
-
-    private List<AlbumsBean>albums;
-
-    public PropertiesBean() {
-    }
-
-    public List<AlbumsBean> getAlbums() {
-        return albums;
-    }
-
-    public void setAlbums(List<AlbumsBean> albums) {
-        this.albums = albums;
-    }
+    private AlbumsBean[] albums;
 
     public int getId() {
         return id;
@@ -97,6 +70,14 @@ public class PropertiesBean implements Serializable {
         this.colorUrl = colorUrl;
     }
 
+    public AlbumsBean[] getAlbums() {
+        return albums;
+    }
+
+    public void setAlbums(AlbumsBean[] albums) {
+        this.albums = albums;
+    }
+
     @Override
     public String toString() {
         return "PropertiesBean{" +
@@ -107,7 +88,7 @@ public class PropertiesBean implements Serializable {
                 ", colorCode='" + colorCode + '\'' +
                 ", colorImg='" + colorImg + '\'' +
                 ", colorUrl='" + colorUrl + '\'' +
-                ", albums=" + albums +
+                ", albums=" + Arrays.toString(albums) +
                 '}';
     }
 }
