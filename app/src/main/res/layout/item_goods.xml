@@ -8,7 +8,7 @@
     android:weightSum="1"
     >
     <ImageView
-        android:id="@+id/ivGoods"
+        android:id="@+id/ivGoodsThumb"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:src="@drawable/nopic"
