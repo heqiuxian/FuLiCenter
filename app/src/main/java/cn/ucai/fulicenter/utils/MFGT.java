@@ -3,7 +3,7 @@ package cn.ucai.fulicenter.utils;
 import android.app.Activity;
 import android.content.Intent;
 
-import cn.ucai.fulicenter.MainActivity;
+import cn.ucai.fulicenter.activity.MainActivity;
 import cn.ucai.fulicenter.R;
 
 

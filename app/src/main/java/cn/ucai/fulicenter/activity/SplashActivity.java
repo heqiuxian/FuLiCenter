@@ -1,9 +1,10 @@
-package cn.ucai.fulicenter;
+package cn.ucai.fulicenter.activity;
 
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.utils.MFGT;
 
 public class SplashActivity extends AppCompatActivity {
