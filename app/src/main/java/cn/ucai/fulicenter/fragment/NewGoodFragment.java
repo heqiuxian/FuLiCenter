@@ -26,6 +26,8 @@ import cn.ucai.fulicenter.utils.CommonUtils;
 import cn.ucai.fulicenter.utils.ConvertUtils;
 import cn.ucai.fulicenter.utils.L;
 
+import static android.R.attr.action;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -43,6 +45,7 @@ public class NewGoodFragment extends Fragment {
     NewGoodAdapter mAdapter;
     ArrayList<NewGoodsBean> mList;
     int pageId=1;
+    GridLayoutManager glm;
 
     public NewGoodFragment() {
         // Required empty public constructor
@@ -60,10 +63,62 @@ public class NewGoodFragment extends Fragment {
         mAdapter=new NewGoodAdapter(mContext,mList);
         initView();
         initData();
+        setListener();
         return view;
     }
 
-    private void initData() {
+    private void setListener() {
+        setPullUpListener();
+        setPullDownListener();
+    }
+
+    /**
+     * 上拉刷新..
+     */
+    private void setPullUpListener() {
+        rv.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                int lastPosition=glm.findLastVisibleItemPosition();
+                if(newState==RecyclerView.SCROLL_STATE_IDLE
+                        &&lastPosition==mAdapter.getItemCount()-1
+                        &&mAdapter.isMore()){
+                    pageId++;
+                    downloadNewGoods(I.ACTION_PULL_UP);
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+            }
+        });
+    }
+
+    /**
+     * 下拉刷新...
+     */
+    private void setPullDownListener() {
+        srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                srl.setRefreshing(true);
+                tvRefresh.setVisibility(View.VISIBLE);
+                pageId=1;
+                downloadNewGoods(I.ACTION_PULL_DOWN);
+            }
+        });
+    }
+    private void initData(){
+        downloadNewGoods(I.ACTION_DOWNLOAD);
+    }
+
+    /**
+     * 连接服务器,数据下载
+     */
+    private void downloadNewGoods(final int action) {
         NetDao.downloadNewGoods(mContext, pageId, new OkHttpUtils.OnCompleteListener<NewGoodsBean[]>() {
             @Override
             public void onSuccess(NewGoodsBean[] result) {
@@ -73,12 +128,16 @@ public class NewGoodFragment extends Fragment {
                 L.e("result="+result);
                 if(result!=null&&result.length>0) {
                     ArrayList<NewGoodsBean> list = ConvertUtils.array2List(result);
+                    if(action==I.ACTION_DOWNLOAD||action==I.ACTION_PULL_DOWN){
                     mAdapter.initData(list);
+                    }else {
+                        mAdapter.addData(list);
+                    }
                     if(list.size()<I.PAGE_SIZE_DEFAULT){
                         mAdapter.setMore(false);
-                    }else {
-                        mAdapter.setMore(false);
                     }
+                }else {
+                    mAdapter.setMore(false);
                 }
             }
 
@@ -86,6 +145,7 @@ public class NewGoodFragment extends Fragment {
             public void onError(String error) {
                 srl.setRefreshing(false);
                 tvRefresh.setVisibility(View.GONE);
+                mAdapter.setMore(false);
                 CommonUtils.showShortToast(error);
                 L.e("error="+error);
             }
@@ -99,7 +159,7 @@ public class NewGoodFragment extends Fragment {
                 getResources().getColor(R.color.google_red),
                 getResources().getColor(R.color.google_yellow)
         );
-        GridLayoutManager glm=new GridLayoutManager(mContext, I.COLUM_NUM);
+        glm=new GridLayoutManager(mContext, I.COLUM_NUM);
         rv.setLayoutManager(glm);
         rv.setHasFixedSize(true);
         rv.setAdapter(mAdapter);

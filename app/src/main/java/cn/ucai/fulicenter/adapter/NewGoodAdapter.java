@@ -31,7 +31,7 @@ public class NewGoodAdapter extends RecyclerView.Adapter {
         this.mGoodsList = mGoodsList;
     }
     public boolean isMore(){
-        return isMore();
+        return isMore;
     }
     public void setMore(boolean more){
         isMore=more;
@@ -81,6 +81,11 @@ public class NewGoodAdapter extends RecyclerView.Adapter {
         if(mGoodsList!=null){
             mGoodsList.clear();
         }
+        mGoodsList.addAll(list);
+        notifyDataSetChanged();
+    }
+
+    public void addData(ArrayList<NewGoodsBean> list) {
         mGoodsList.addAll(list);
         notifyDataSetChanged();
     }
