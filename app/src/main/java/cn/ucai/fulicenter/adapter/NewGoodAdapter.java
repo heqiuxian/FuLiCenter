@@ -1,6 +1,7 @@
 package cn.ucai.fulicenter.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +13,14 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.OnItemClick;
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.activity.GoodsDtailActivity;
 import cn.ucai.fulicenter.bean.NewGoodsBean;
 import cn.ucai.fulicenter.utils.ImageLoader;
+import cn.ucai.fulicenter.utils.MFGT;
 
 /**
  * Created by Administrator on 2016/10/17.
@@ -25,10 +30,20 @@ public class NewGoodAdapter extends RecyclerView.Adapter {
     Context mContext;
     ArrayList<NewGoodsBean> mGoodsList;
     boolean isMore;
+    View.OnClickListener mOnItemClickListener;
 
-    public NewGoodAdapter(Context mContext, ArrayList<NewGoodsBean> mGoodsList) {
+    public NewGoodAdapter(final Context mContext, ArrayList<NewGoodsBean> mGoodsList) {
         this.mContext = mContext;
         this.mGoodsList = mGoodsList;
+        mOnItemClickListener=new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int goodId = (int) v.getTag();
+                Intent intent=new Intent(mContext,GoodsDtailActivity.class).putExtra(I.GoodsDetails.KEY_GOODS_ID,goodId);
+                mContext.startActivity(intent);
+
+            }
+        };
     }
     public boolean isMore(){
         return isMore;
@@ -60,6 +75,7 @@ public class NewGoodAdapter extends RecyclerView.Adapter {
             ImageLoader.downloadImg(mContext,vh.ivGoodsThumb,goods.getGoodsThumb());
             vh.tvGoodsName.setText(goods.getGoodsName());
             vh.tvGoodsPrice.setText(goods.getCurrencyPrice());
+            vh.layoutGoods.setTag(goods.getGoodsId());
         }
 
     }
@@ -90,7 +106,7 @@ public class NewGoodAdapter extends RecyclerView.Adapter {
         notifyDataSetChanged();
     }
 
-    static class GoodsViewHolder extends RecyclerView.ViewHolder{
+    class GoodsViewHolder extends RecyclerView.ViewHolder{
         @BindView(R.id.ivGoodsThumb)
         ImageView ivGoodsThumb;
         @BindView(R.id.tvGoodsName)
@@ -103,6 +119,7 @@ public class NewGoodAdapter extends RecyclerView.Adapter {
         GoodsViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
+            layoutGoods.setOnClickListener(mOnItemClickListener);
         }
     }
 

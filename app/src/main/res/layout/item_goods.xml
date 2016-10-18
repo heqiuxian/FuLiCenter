@@ -23,6 +23,7 @@
         android:textSize="13sp"
         android:maxLines="2"
         android:ellipsize="end"
+        android:textColor="#f216"
         />
     <TextView
         android:id="@+id/tvGoodsPrice"
@@ -30,6 +31,7 @@
         android:layout_height="wrap_content"
         android:textSize="13sp"
         android:text="$399.99"
+        android:textColor="#f23344"
         />
 
 </LinearLayout>
