@@ -22,5 +22,4 @@ public class ConvertUtils {
         int density = (int) context.getResources().getDisplayMetrics().density;
         return px/density;
     }
-
 }

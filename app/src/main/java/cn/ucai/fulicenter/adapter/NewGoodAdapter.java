@@ -46,8 +46,7 @@ public class NewGoodAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if(getItemViewType(position)==I.TYPE_FOOTER){
             FooterViewHolder footerViewHolder= (FooterViewHolder) holder;
-            footerViewHolder.tvFooter.setText("更多加载..");
-            L.i("nimeide");
+            footerViewHolder.tvFooter.setText("没有更多了...");
         }else {
             GoodsViewHolder vh= (GoodsViewHolder) holder;
             NewGoodsBean goods=mGoodsList.get(position);
