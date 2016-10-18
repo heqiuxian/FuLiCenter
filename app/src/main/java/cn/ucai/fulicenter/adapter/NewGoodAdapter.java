@@ -16,7 +16,6 @@ import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.bean.NewGoodsBean;
 import cn.ucai.fulicenter.utils.ImageLoader;
-import cn.ucai.fulicenter.utils.L;
 
 /**
  * Created by Administrator on 2016/10/17.
@@ -25,10 +24,18 @@ import cn.ucai.fulicenter.utils.L;
 public class NewGoodAdapter extends RecyclerView.Adapter {
     Context mContext;
     ArrayList<NewGoodsBean> mGoodsList;
+    boolean isMore;
 
     public NewGoodAdapter(Context mContext, ArrayList<NewGoodsBean> mGoodsList) {
         this.mContext = mContext;
         this.mGoodsList = mGoodsList;
+    }
+    public boolean isMore(){
+        return isMore();
+    }
+    public void setMore(boolean more){
+        isMore=more;
+        notifyDataSetChanged();
     }
 
     @Override
