@@ -25,6 +25,7 @@ import cn.ucai.fulicenter.net.OkHttpUtils;
 import cn.ucai.fulicenter.utils.CommonUtils;
 import cn.ucai.fulicenter.utils.ConvertUtils;
 import cn.ucai.fulicenter.utils.L;
+import cn.ucai.fulicenter.view.SpaceItemDecoration;
 
 import static android.R.attr.action;
 
@@ -163,6 +164,7 @@ public class NewGoodFragment extends Fragment {
         rv.setLayoutManager(glm);
         rv.setHasFixedSize(true);
         rv.setAdapter(mAdapter);
+        rv.addItemDecoration(new SpaceItemDecoration(12));
     }
 
 }
