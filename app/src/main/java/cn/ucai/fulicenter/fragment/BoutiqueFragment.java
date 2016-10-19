@@ -46,12 +46,13 @@ public class BoutiqueFragment extends Fragment {
     LinearLayoutManager llm;
     Activity mContext;
     BoutiqueAdapter mAdapter;
-
+    ArrayList<BoutiqueBean> list;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_boutique, container, false);
         ButterKnife.bind(this, layout);
         mContext= (Activity) getContext();
+
         initView();
         initData();
         return layout;
@@ -62,33 +63,20 @@ public class BoutiqueFragment extends Fragment {
     }
 
     private void downloadBoutique(final int action) {
-        NetDao.downloadBoutique(mContext, new OkHttpUtils.OnCompleteListener<BoutiqueBean[]>() {
+        NetDao.downloadBoutique(mContext, new OkHttpUtils.OnCompleteListener<BoutiqueBean[]>(){
             @Override
             public void onSuccess(BoutiqueBean[] result) {
                 tvRefresh.setVisibility(View.GONE);
-                mAdapter.setMore(true);
-                L.e("result="+result);
                 if(result!=null&&result.length>0) {
                     ArrayList<BoutiqueBean> list = ConvertUtils.array2List(result);
-                    if(action==I.ACTION_DOWNLOAD||action==I.ACTION_PULL_DOWN){
-                        mAdapter.initData(list);
-                    }else {
-                        mAdapter.addData(list);
-                    }
-                    if(list.size()<I.PAGE_SIZE_DEFAULT){
-                        mAdapter.setMore(false);
-                    }
-                }else {
-                    mAdapter.setMore(false);
-                }ConvertUtils.array2List(result);
-
+                    mAdapter.initData(list);
+                }
             }
 
             @Override
             public void onError(String error) {
                 srl.setRefreshing(false);
                 tvRefresh.setVisibility(View.GONE);
-                mAdapter.setMore(false);
                 CommonUtils.showShortToast(error);
                 L.e("error="+error);
             }
@@ -102,7 +90,9 @@ public class BoutiqueFragment extends Fragment {
                 getResources().getColor(R.color.google_red),
                 getResources().getColor(R.color.google_yellow)
         );
-        llm=new GridLayoutManager(mContext, I.COLUM_NUM);
+        llm=new LinearLayoutManager(mContext);
+        list=new ArrayList<>();
+        mAdapter=new BoutiqueAdapter(mContext,list);
         rv.setLayoutManager(llm);
         rv.setHasFixedSize(true);
         rv.setAdapter(mAdapter);
