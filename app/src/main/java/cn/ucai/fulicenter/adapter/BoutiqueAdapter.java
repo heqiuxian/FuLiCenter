@@ -87,6 +87,20 @@ public class BoutiqueAdapter extends RecyclerView.Adapter {
         return isMore?R.string.load_more:R.string.no_more;
     }
 
+    public void initData(ArrayList<BoutiqueBean> list) {
+        if(mlist!=null){
+            mlist.clear();
+        }
+        mlist.addAll(list);
+        notifyDataSetChanged();
+    }
+
+    public void addData(ArrayList<BoutiqueBean> list) {
+        mlist.addAll(list);
+        notifyDataSetChanged();
+    }
+
+
     class BoutiqueViewHolder extends RecyclerView.ViewHolder{
         @BindView(R.id.ivBoutiqueImg)
         ImageView ivBoutiqueImg;
