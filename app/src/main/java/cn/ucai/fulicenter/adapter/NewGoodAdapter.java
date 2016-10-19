@@ -41,7 +41,6 @@ public class NewGoodAdapter extends RecyclerView.Adapter {
                 int goodId = (int) v.getTag();
                 Intent intent=new Intent(mContext,GoodsDtailActivity.class).putExtra(I.GoodsDetails.KEY_GOODS_ID,goodId);
                 mContext.startActivity(intent);
-
             }
         };
     }
