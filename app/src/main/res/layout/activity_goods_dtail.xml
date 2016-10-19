@@ -79,18 +79,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="名称"
-        android:textSize="30sp"
+        android:textSize="25sp"
+        android:textColor="#f909"
+        android:layout_marginTop="20dp"
         />
     <TextView
         android:id="@+id/tvMoney"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="价格３００"
-        android:textSize="30sp"/>
+        android:text="价格"
+        android:textSize="30sp"
+        android:textColor="#f54433"
+        android:layout_marginTop="20dp"/>
     <WebView
         android:id="@+id/wvAbout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         />
 
 
