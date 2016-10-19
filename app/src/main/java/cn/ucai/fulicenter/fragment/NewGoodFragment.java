@@ -67,7 +67,6 @@ public class NewGoodFragment extends Fragment {
         setListener();
         return view;
     }
-
     private void setListener() {
         setPullUpListener();
         setPullDownListener();
