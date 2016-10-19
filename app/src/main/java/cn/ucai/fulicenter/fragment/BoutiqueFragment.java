@@ -8,6 +8,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,7 +56,25 @@ public class BoutiqueFragment extends Fragment {
 
         initView();
         initData();
+        setListener();
         return layout;
+    }
+
+    private void setListener() {
+        setPullDownListener();
+    }
+
+
+    private void setPullDownListener() {
+        L.e("下拉请求你看到了没");
+        srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                srl.setRefreshing(true);
+                tvRefresh.setVisibility(View.VISIBLE);
+                downloadBoutique(I.ACTION_PULL_DOWN);
+            }
+        });
     }
 
     private void initData() {
@@ -66,6 +85,7 @@ public class BoutiqueFragment extends Fragment {
         NetDao.downloadBoutique(mContext, new OkHttpUtils.OnCompleteListener<BoutiqueBean[]>(){
             @Override
             public void onSuccess(BoutiqueBean[] result) {
+                srl.setRefreshing(false);
                 tvRefresh.setVisibility(View.GONE);
                 if(result!=null&&result.length>0) {
                     ArrayList<BoutiqueBean> list = ConvertUtils.array2List(result);
