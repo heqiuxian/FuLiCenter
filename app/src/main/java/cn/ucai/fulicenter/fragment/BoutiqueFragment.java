@@ -5,14 +5,11 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -31,7 +28,6 @@ import cn.ucai.fulicenter.utils.ConvertUtils;
 import cn.ucai.fulicenter.utils.L;
 import cn.ucai.fulicenter.view.SpaceItemDecoration;
 
-import static android.R.id.list;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -63,7 +59,6 @@ public class BoutiqueFragment extends Fragment {
     private void setListener() {
         setPullDownListener();
     }
-
 
     private void setPullDownListener() {
         L.e("下拉请求你看到了没");
