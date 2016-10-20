@@ -31,7 +31,8 @@
         </activity>
         <activity android:name=".activity.GoodsDtailActivity" />
         <activity android:name=".activity.BaseActivity" />
-        <activity android:name=".activity.BoutiqueDtailActivity"></activity>
+        <activity android:name=".activity.BoutiqueDtailActivity" />
+        <activity android:name=".activity.CategoryChildActivity"></activity>
     </application>
 
 </manifest>
