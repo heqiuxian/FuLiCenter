@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
+import java.util.ArrayList;
+
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.activity.BoutiqueDtailActivity;
 import cn.ucai.fulicenter.activity.CategoryChildActivity;
@@ -11,6 +13,7 @@ import cn.ucai.fulicenter.activity.GoodsDtailActivity;
 import cn.ucai.fulicenter.activity.MainActivity;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.bean.BoutiqueBean;
+import cn.ucai.fulicenter.bean.CategoryChildBean;
 
 import static cn.ucai.fulicenter.I.Property.goodsId;
 
@@ -26,10 +29,9 @@ public class MFGT {
     public static void startActivity(Activity context,Class<?> cls){
         Intent intent = new Intent();
         intent.setClass(context,cls);
-        context.startActivity(intent);
-        context.overridePendingTransition(R.anim.push_left_in,R.anim.push_left_out);
+        startActivity(context,intent);
     }
-    public static void gotoGoodsDtailActivity(Activity context){
+    public static void gotoGoodsDtailActivity(Context context,int goodsId){
         Intent intent = new Intent();
         intent.setClass(context, GoodsDtailActivity.class);
         intent.putExtra(I.GoodsDetails.KEY_GOODS_ID,goodsId);
@@ -47,10 +49,12 @@ public class MFGT {
         intent.putExtra(I.Boutique.CAT_ID,bean);
         startActivity(context,intent);
     }
-    public static void gotoCategoryChildActivity(Context context,int catId){
+    public static void gotoCategoryChildActivity(Context context,int catId,String groupName, ArrayList<CategoryChildBean> list){
         Intent intent = new Intent();
         intent.setClass(context, CategoryChildActivity.class);
         intent.putExtra(I.CategoryChild.CAT_ID,catId);
+        intent.putExtra(I.CategoryGroup.NAME,groupName);
+        intent.putExtra(I.CategoryChild.ID,list);
         startActivity(context,intent);
     }
 

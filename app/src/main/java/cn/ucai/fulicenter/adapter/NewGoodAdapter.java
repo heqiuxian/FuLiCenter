@@ -10,6 +10,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,21 +31,19 @@ import cn.ucai.fulicenter.view.FooterViewHolder;
 
 public class NewGoodAdapter extends RecyclerView.Adapter {
     Context mContext;
-    ArrayList<NewGoodsBean> mGoodsList;
+    ArrayList<NewGoodsBean> mList;
     boolean isMore;
-    View.OnClickListener mOnItemClickListener;
+    int soryBy=I.SORT_BY_ADDTIME_DESC;
 
-    public NewGoodAdapter(final Context mContext, ArrayList<NewGoodsBean> mGoodsList) {
-        this.mContext = mContext;
-        this.mGoodsList = mGoodsList;
-        mOnItemClickListener=new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int goodId = (int) v.getTag();
-                Intent intent=new Intent(mContext,GoodsDtailActivity.class).putExtra(I.GoodsDetails.KEY_GOODS_ID,goodId);
-                mContext.startActivity(intent);
-            }
-        };
+    public NewGoodAdapter(final Context context, ArrayList<NewGoodsBean> list) {
+        mContext=context;
+        mList=new ArrayList<>();
+        mList.addAll(list);
+    }
+    public void setSoryBy(int soryBy){
+        this.soryBy=soryBy;
+        sortBy();
+        notifyDataSetChanged();
     }
     public boolean isMore(){
         return isMore;
@@ -68,21 +68,23 @@ public class NewGoodAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if(getItemViewType(position)==I.TYPE_FOOTER){
             FooterViewHolder footerViewHolder= (FooterViewHolder) holder;
-            footerViewHolder.tvFooter.setText("没有更多了...");
+            footerViewHolder.tvFooter.setText(getFootString());
         }else {
             GoodsViewHolder vh= (GoodsViewHolder) holder;
-            NewGoodsBean goods=mGoodsList.get(position);
+            NewGoodsBean goods=mList.get(position);
             ImageLoader.downloadImg(mContext,vh.ivGoodsThumb,goods.getGoodsThumb());
             vh.tvGoodsName.setText(goods.getGoodsName());
             vh.tvGoodsPrice.setText(goods.getCurrencyPrice());
             vh.layoutGoods.setTag(goods.getGoodsId());
         }
-
+    }
+    private int getFootString(){
+        return isMore?R.string.load_more:R.string.no_more;
     }
 
     @Override
     public int getItemCount() {
-        return mGoodsList != null ? mGoodsList.size() + 1 : 1;
+        return mList != null ? mList.size() + 1 : 1;
     }
 
     @Override
@@ -94,15 +96,15 @@ public class NewGoodAdapter extends RecyclerView.Adapter {
     }
 
     public void initData(ArrayList<NewGoodsBean> list) {
-        if(mGoodsList!=null){
-            mGoodsList.clear();
+        if(mList!=null){
+            mList.clear();
         }
-        mGoodsList.addAll(list);
+        mList.addAll(list);
         notifyDataSetChanged();
     }
 
     public void addData(ArrayList<NewGoodsBean> list) {
-        mGoodsList.addAll(list);
+        mList.addAll(list);
         notifyDataSetChanged();
     }
 
@@ -119,7 +121,40 @@ public class NewGoodAdapter extends RecyclerView.Adapter {
         GoodsViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
-            layoutGoods.setOnClickListener(mOnItemClickListener);
+        }
+        @OnClick(R.id.layout_goods)
+        public void onGoodsItemClick(){
+            int goodsId= (int) layoutGoods.getTag();
+            MFGT.gotoGoodsDtailActivity(mContext,goodsId);
         }
     }
+    private void sortBy(){
+        Collections.sort(mList, new Comparator<NewGoodsBean>() {
+            @Override
+            public int compare(NewGoodsBean left, NewGoodsBean right) {
+                int result=0;
+                switch (soryBy){
+                    case I.SORT_BY_ADDTIME_ASC:
+                        result= (int) (Long.valueOf(left.getAddTime())-Long.valueOf(right.getAddTime()));
+                        break;
+                    case I.SORT_BY_ADDTIME_DESC:
+                        result= (int) (Long.valueOf(right.getAddTime())-Long.valueOf(left.getAddTime()));
+                        break;
+                    case I.SORT_BY_PRICE_ASC:
+                        result = getPrice(left.getCurrencyPrice())-getPrice(right.getCurrencyPrice());
+                        break;
+                    case I.SORT_BY_PRICE_DESC:
+                        result = getPrice(right.getCurrencyPrice())-getPrice(left.getCurrencyPrice());
+                        break;
+                }
+                return result;
+            }
+            private int getPrice(String price) {
+                price=price.substring(price.indexOf("￥")+1);
+                return Integer.valueOf(price);
+            }
+        });
+    }
+
+
 }
