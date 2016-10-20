@@ -4,23 +4,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.utils.MFGT;
 
-public class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_base);
         initView();
         initData();
         setListener();
     }
-    private void initView(){
 
-    }
-    private void initData(){
+    protected abstract void initView();
+    protected abstract void initData();
+    protected abstract void setListener();
 
+    public void onBackPressed(){
+        MFGT.finish(this);
     }
-    private void setListener() {
-    }
+
+
 }

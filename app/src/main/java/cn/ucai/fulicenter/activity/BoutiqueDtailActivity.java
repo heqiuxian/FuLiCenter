@@ -86,7 +86,7 @@ public class BoutiqueDtailActivity extends AppCompatActivity {
     }
 
     private void downloadNewGoods(final int action) {
-        NetDao.downloadNewGoods(mContext,boutique.getId(), new OkHttpUtils.OnCompleteListener<NewGoodsBean[]>() {
+        NetDao.downloadNewGoods(mContext,boutique.getId(),pageId,new OkHttpUtils.OnCompleteListener<NewGoodsBean[]>() {
             @Override
             public void onSuccess(NewGoodsBean[] result) {
                 srl.setRefreshing(false);

@@ -118,7 +118,7 @@ public class NewGoodFragment extends Fragment {
      * 连接服务器,数据下载
      */
     private void downloadNewGoods(final int action) {
-        NetDao.downloadNewGoods(mContext, pageId, new OkHttpUtils.OnCompleteListener<NewGoodsBean[]>() {
+        NetDao.downloadNewGoods(mContext,I.CAT_ID, pageId, new OkHttpUtils.OnCompleteListener<NewGoodsBean[]>() {
             @Override
             public void onSuccess(NewGoodsBean[] result) {
                 srl.setRefreshing(false);
