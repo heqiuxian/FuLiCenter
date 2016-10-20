@@ -5,6 +5,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -39,6 +40,13 @@ public class CategoryChildActivity extends BaseActivity {
     int pageId = 1;
     GridLayoutManager glm;
     int catId;
+    @BindView(R.id.btn_sort_price)
+    Button btnSortPrice;
+    @BindView(R.id.btn_sort_addtime)
+    Button btnSortAddtime;
+    boolean addTimeAsc=false;
+    boolean priceAsc=false;
+    int sortBy=I.SORT_BY_ADDTIME_DESC;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +54,9 @@ public class CategoryChildActivity extends BaseActivity {
         ButterKnife.bind(this);
         mContext = this;
         mList = new ArrayList<>();
-        mAdapter = new NewGoodAdapter(mContext,mList);
-        catId=getIntent().getIntExtra(I.CategoryChild.CAT_ID,0);
-        if(catId==0){
+        mAdapter = new NewGoodAdapter(mContext, mList);
+        catId = getIntent().getIntExtra(I.CategoryChild.CAT_ID, 0);
+        if (catId == 0) {
             finish();
         }
         super.onCreate(savedInstanceState);
@@ -69,6 +77,7 @@ public class CategoryChildActivity extends BaseActivity {
         rv.setAdapter(mAdapter);
         rv.addItemDecoration(new SpaceItemDecoration(12));
     }
+
     @Override
     protected void initData() {
         downloadCategoryGoods(I.ACTION_DOWNLOAD);
@@ -148,8 +157,32 @@ public class CategoryChildActivity extends BaseActivity {
             }
         });
     }
+
     @OnClick(R.id.backClickArea)
     public void onClick() {
         MFGT.finish(this);
+    }
+
+    @OnClick({R.id.btn_sort_price, R.id.btn_sort_addtime})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btn_sort_price:
+                if(priceAsc){
+                    sortBy=I.SORT_BY_PRICE_ASC;
+                }else {
+                    sortBy=I.SORT_BY_PRICE_DESC;
+                }
+                priceAsc=!priceAsc;
+                break;
+            case R.id.btn_sort_addtime:
+                if(addTimeAsc){
+                    sortBy=I.SORT_BY_ADDTIME_ASC;
+                }else {
+                    sortBy=I.SORT_BY_ADDTIME_DESC;
+                }
+                addTimeAsc=!addTimeAsc;
+                break;
+        }
+        mAdapter.setSoryBy(sortBy);
     }
 }
