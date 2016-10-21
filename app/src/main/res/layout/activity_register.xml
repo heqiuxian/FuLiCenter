@@ -35,10 +35,10 @@
         android:gravity="center"
         >
         <EditText
-            android:id="@+id/et_register_againusername"
+            android:id="@+id/et_register_nick"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="请再次确认用户名"
+            android:hint="昵称"
             android:textSize="25sp"
             />
         <ImageView
@@ -103,6 +103,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
         android:textColor="@color/holo_red_light"
+        android:background="@drawable/btn_shape"
         />
 
 </LinearLayout>

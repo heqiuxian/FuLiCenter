@@ -1,5 +1,6 @@
 package cn.ucai.fulicenter.activity;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.fragment.BoutiqueFragment;
 import cn.ucai.fulicenter.fragment.CartFragment;
@@ -20,6 +22,9 @@ import cn.ucai.fulicenter.fragment.CategoryFragment;
 import cn.ucai.fulicenter.fragment.NewGoodFragment;
 import cn.ucai.fulicenter.fragment.PersonalFragment;
 import cn.ucai.fulicenter.utils.L;
+import cn.ucai.fulicenter.utils.MFGT;
+
+import static java.security.AccessController.getContext;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -98,8 +103,12 @@ public class MainActivity extends AppCompatActivity {
                 index = 3;
                 break;
             case R.id.layout_personal_center:
-                index = 4;
-                break;
+                if (FuLiCenterApplication.getUseName()==null){
+                    MFGT.gotoLogin(this);
+                }else {
+                    index = 4;
+                    break;
+                }
         }
         setChecked();
         switchFragment(index);
