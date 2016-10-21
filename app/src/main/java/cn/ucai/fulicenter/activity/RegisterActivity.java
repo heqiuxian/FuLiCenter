@@ -1,5 +1,6 @@
 package cn.ucai.fulicenter.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -13,6 +14,7 @@ import cn.ucai.fulicenter.bean.Result;
 import cn.ucai.fulicenter.net.NetDao;
 import cn.ucai.fulicenter.net.OkHttpUtils;
 import cn.ucai.fulicenter.utils.L;
+import cn.ucai.fulicenter.utils.MFGT;
 import cn.ucai.fulicenter.view.DisplayUtils;
 
 public class RegisterActivity extends BaseActivity {
@@ -50,8 +52,14 @@ public class RegisterActivity extends BaseActivity {
             public void onSuccess(Result result) {
                 if(result.getRetCode()==0){
                     Toast.makeText(RegisterActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
+                    //跳转到登录界面
+                    setResult(RESULT_OK,new Intent().putExtra(I.User.USER_NAME,etRegisterUsername.getText().toString()));
+                    //关闭这个Activity
+                    MFGT.finish(RegisterActivity.this);
                 }else if (result.getRetCode()==I.MSG_REGISTER_USERNAME_EXISTS){
                     Toast.makeText(RegisterActivity.this, "用户已经存在", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(RegisterActivity.this, "注册失败", Toast.LENGTH_SHORT).show();
                 }
             }
             @Override
@@ -82,11 +90,11 @@ public class RegisterActivity extends BaseActivity {
         }
         String userPassword =etRegisterPassword.getText().toString().trim();
         if(userPassword==null||userPassword.length()==0){
-            etRegisterPassword.setError("请再次确认密码");
+            etRegisterPassword.setError("请输入密码");
             return;
         }
-        String userAgain =etRegisterAgainpassword.getText().toString().trim();
-        if(userAgain==null||userAgain.length()==0){
+        String userAgainpwd =etRegisterAgainpassword.getText().toString().trim();
+        if(userAgainpwd==null||userAgainpwd.length()==0){
             etRegisterAgainpassword.setError("确认密码不能为空");
             return;
         }
@@ -94,6 +102,11 @@ public class RegisterActivity extends BaseActivity {
             etRegisterUsername.setError("用户名以字母开头,6-16位");
             return;
         }
+        if(!userPassword.equals(userAgainpwd)){
+            etRegisterAgainpassword.setError("两次密码不一致");
+            return;
+        }
+
         onRegister();
     }
 }
