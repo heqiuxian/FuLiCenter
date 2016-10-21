@@ -9,6 +9,7 @@ import cn.ucai.fulicenter.bean.CategoryChildBean;
 import cn.ucai.fulicenter.bean.CategoryGroupBean;
 import cn.ucai.fulicenter.bean.GoodsDetailsBean;
 import cn.ucai.fulicenter.bean.NewGoodsBean;
+import cn.ucai.fulicenter.bean.Result;
 
 /**
  * Created by Administrator on 2016/10/17.
@@ -66,6 +67,21 @@ public class NetDao {
                 .addParam(I.PAGE_ID, String.valueOf(pageId))
                 .addParam(I.PAGE_SIZE, String.valueOf(I.PAGE_SIZE_DEFAULT))
                 .targetClass(NewGoodsBean[].class)
+                .execute(listener);
+    }
+
+    /**
+     * 用户注册
+     */
+    public static void Register(Context context, String userName, String userNick
+    , String passWord, OkHttpUtils.OnCompleteListener<Result>listener){
+    OkHttpUtils utils=new OkHttpUtils(context);
+        utils.setRequestUrl(I.REQUEST_REGISTER)
+                .addParam(I.User.USER_NAME,userName)
+                .addParam(I.User.NICK,userNick)
+                .addParam(I.User.PASSWORD,passWord)
+                .targetClass(Result.class)
+                .post()
                 .execute(listener);
     }
 }
