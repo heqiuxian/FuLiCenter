@@ -17,6 +17,7 @@ import butterknife.OnClick;
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.adapter.NewGoodAdapter;
+import cn.ucai.fulicenter.bean.CategoryChildBean;
 import cn.ucai.fulicenter.bean.NewGoodsBean;
 import cn.ucai.fulicenter.net.NetDao;
 import cn.ucai.fulicenter.net.OkHttpUtils;
@@ -49,6 +50,8 @@ public class CategoryChildActivity extends BaseActivity {
     boolean priceAsc=false;
     int sortBy=I.SORT_BY_ADDTIME_DESC;
 
+    String groupName;
+    ArrayList<CategoryChildBean>mChildList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_category_child);
@@ -57,9 +60,12 @@ public class CategoryChildActivity extends BaseActivity {
         mList = new ArrayList<>();
         mAdapter = new NewGoodAdapter(mContext, mList);
         catId = getIntent().getIntExtra(I.CategoryChild.CAT_ID, 0);
+        L.e(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>catId="+catId);
         if (catId == 0) {
             finish();
         }
+        groupName=getIntent().getStringExtra(I.CategoryGroup.NAME);
+        mChildList= (ArrayList<CategoryChildBean>) getIntent().getSerializableExtra(I.CategoryChild.ID);
         super.onCreate(savedInstanceState);
     }
 
@@ -77,6 +83,7 @@ public class CategoryChildActivity extends BaseActivity {
         rv.setHasFixedSize(true);
         rv.setAdapter(mAdapter);
         rv.addItemDecoration(new SpaceItemDecoration(12));
+
     }
 
     @Override
@@ -91,7 +98,7 @@ public class CategoryChildActivity extends BaseActivity {
                 srl.setRefreshing(false);
                 tvRefresh.setVisibility(View.GONE);
                 mAdapter.setMore(true);
-                L.e("result=" + result);
+                L.e("result=======================" + result);
                 if (result != null && result.length > 0) {
                     ArrayList<NewGoodsBean> list = ConvertUtils.array2List(result);
                     if (action == I.ACTION_DOWNLOAD || action == I.ACTION_PULL_DOWN) {
@@ -102,8 +109,10 @@ public class CategoryChildActivity extends BaseActivity {
                     if (list.size() < I.PAGE_SIZE_DEFAULT) {
                         mAdapter.setMore(false);
                     }
+                    L.e("madaodddddddddddddddddddddddddddddddnadap拿到到底哪 ");
                 } else {
                     mAdapter.setMore(false);
+                    L.e(">>>>>>>>>>>>>>>>>>>>>>>>>跑到这而来了?>>");
                 }
             }
 
@@ -114,6 +123,7 @@ public class CategoryChildActivity extends BaseActivity {
                 mAdapter.setMore(false);
                 CommonUtils.showShortToast(error);
                 L.e("error:" + error);
+                L.e("你就是个错比");
             }
         });
     }

@@ -15,6 +15,7 @@ import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.bean.Result;
 import cn.ucai.fulicenter.net.NetDao;
 import cn.ucai.fulicenter.net.OkHttpUtils;
+import cn.ucai.fulicenter.utils.L;
 import cn.ucai.fulicenter.utils.MFGT;
 
 public class LoginActivity extends BaseActivity {
@@ -63,7 +64,7 @@ public class LoginActivity extends BaseActivity {
             return;
         }
         String password=etPassword.getText().toString().trim();
-        if(userName==null||userName.length()==0) {
+        if(password==null||password.length()==0) {
             etPassword.setError("密码不能为空");
             return;
         }
@@ -71,7 +72,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void onLogin() {
-        NetDao.Login(this, etUserName.getText().toString(), etPassword.getText().toString(), new OkHttpUtils.OnCompleteListener<Result>() {
+        NetDao.Login(this,etUserName.getText().toString(), etPassword.getText().toString(), new OkHttpUtils.OnCompleteListener<Result>() {
             @Override
             public void onSuccess(Result result) {
                 if(result.getRetCode()==0){

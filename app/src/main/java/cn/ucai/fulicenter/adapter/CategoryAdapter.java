@@ -19,7 +19,7 @@ import cn.ucai.fulicenter.utils.ImageLoader;
 import cn.ucai.fulicenter.utils.L;
 import cn.ucai.fulicenter.utils.MFGT;
 
-/**
+/***
  * Created by Administrator on 2016/10/20.
  */
 
@@ -59,13 +59,13 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public long getGroupId(int groupPosition) {
-        return 0;
+    public long getGroupId(int i) {
+        return i;
     }
 
     @Override
-    public long getChildId(int groupPosition, int childPosition) {
-        return 0;
+    public long getChildId(int i, int i1) {
+        return i1;
     }
 
     @Override
@@ -74,25 +74,25 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+    public View getGroupView(int groupPosition, boolean isExpand, View view, ViewGroup viewGroup) {
         GroupViewHolder holder;
         L.e("fragment","group=====================");
-        if (convertView == null) {
-            convertView = View.inflate(mContext, R.layout.item_category_group, null);
-            holder=new GroupViewHolder(convertView);
-            convertView.setTag(holder);
+        if (view == null) {
+            view = View.inflate(mContext, R.layout.item_category_group, null);
+            holder=new GroupViewHolder(view);
+            view.setTag(holder);
         }else {
-            convertView.getTag();
-            holder= (GroupViewHolder) convertView.getTag();
+            view.getTag();
+            holder= (GroupViewHolder) view.getTag();
         }
         CategoryGroupBean group=getGroup(groupPosition);
         L.e("fragment","group="+group.toString());
         if(group!=null){
             ImageLoader.downloadImg(mContext,holder.ivGroupThumb,group.getImageUrl());
             holder.tvGroupName.setText(group.getName());
-            holder.ivIndicator.setImageResource(isExpanded?R.mipmap.expand_off:R.mipmap.expand_on);
+            holder.ivIndicator.setImageResource(isExpand?R.mipmap.expand_off:R.mipmap.expand_on);
         }
-        return convertView;
+        return view;
     }
 
     @Override
@@ -115,6 +115,7 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
                     ArrayList<CategoryChildBean> list = mChildList.get(groupPosition);
                     String groupName = mGroupList.get(groupPosition).getName();
                     MFGT.gotoCategoryChildActivity(mContext,child.getId(),groupName,list);
+                    L.e(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+child.getId());
                 }
             });
         }
@@ -123,20 +124,20 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
 
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
-        return false;
+        return true;
     }
 
-    public void initData(ArrayList<CategoryGroupBean> mGroupList, ArrayList<ArrayList<CategoryChildBean>> mChildList) {
+
+
+    public void initData(ArrayList<CategoryGroupBean> groupList, ArrayList<ArrayList<CategoryChildBean>> childList) {
         if(mGroupList!=null){
             mGroupList.clear();
         }
-        L.e("fragment","groupList="+mGroupList.get(0).toString());
-        mGroupList.addAll(mGroupList);
+        mGroupList.addAll(groupList);
         if(mChildList!=null){
             mChildList.clear();
         }
-        L.e("fragment","childList="+mChildList.get(0).toString());
-        mChildList.addAll(mChildList);
+        mChildList.addAll(childList);
         notifyDataSetChanged();
     }
 

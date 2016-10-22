@@ -42,7 +42,7 @@ public class CategoryFragment extends Fragment {
         ButterKnife.bind(this, layout);
         mContext= (MainActivity) getContext();
         mGroupList=new ArrayList<>();
-        mChildList=new ArrayList<>();
+        mChildList=new ArrayList<ArrayList<CategoryChildBean>>();
         initData();
         initView();
         setListener();
@@ -104,7 +104,7 @@ public class CategoryFragment extends Fragment {
                     L.e("groupList"+"childList.size"+mChildList.get(0).toString());
                 }
                 if(groupCount==mGroupList.size()){
-//                    mAdapter.initData(mGroupList,mChildList);
+                    mAdapter.initData(mGroupList,mChildList);
                 }
             }
 

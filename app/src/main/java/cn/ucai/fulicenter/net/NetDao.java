@@ -63,7 +63,7 @@ public class NetDao {
     public static void downloadCategoryGoods(Context context,int catId,int pageId, OkHttpUtils.OnCompleteListener<NewGoodsBean[]> listener) {
         OkHttpUtils<NewGoodsBean[]> utils = new OkHttpUtils<>(context);
         utils.setRequestUrl(I.REQUEST_FIND_GOODS_DETAILS)
-                .addParam(I.NewAndBoutiqueGoods.CAT_ID, String.valueOf(I.CAT_ID))
+                .addParam(I.NewAndBoutiqueGoods.CAT_ID, String.valueOf(catId))
                 .addParam(I.PAGE_ID, String.valueOf(pageId))
                 .addParam(I.PAGE_SIZE, String.valueOf(I.PAGE_SIZE_DEFAULT))
                 .targetClass(NewGoodsBean[].class)
@@ -79,11 +79,19 @@ public class NetDao {
         utils.setRequestUrl(I.REQUEST_REGISTER)
                 .addParam(I.User.USER_NAME,userName)
                 .addParam(I.User.NICK,userNick)
-                .addParam(I.User.PASSWORD,passWord)
+                .addParam(I.User.PASSWORD,MD5.getMessageDigest(passWord))
                 .targetClass(Result.class)
                 .post()
                 .execute(listener);
     }
+
+    /**
+     * 用户登录
+     * @param context 上下文
+     * @param userName 用户名
+     * @param passWord 密码
+     * @param listener listener
+     */
     public static void Login(Context context,String userName,String passWord,OkHttpUtils.OnCompleteListener<Result>listener){
         OkHttpUtils<Result> utils=new OkHttpUtils<>(context);
         utils.setRequestUrl(I.REQUEST_LOGIN)

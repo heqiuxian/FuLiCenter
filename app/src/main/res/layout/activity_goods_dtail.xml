@@ -61,7 +61,7 @@
         android:id="@+id/salv"
         android:layout_width="match_parent"
         android:layout_height="177dp"
-        android:layout_weight="0.12" />
+        android:layout_weight="0.29" />
     <cn.ucai.fulicenter.view.FlowIndicator
         android:id="@+id/fid"
         app:count="4"
@@ -70,9 +70,10 @@
         app:focus_color="#f00"
         app:normal_color="@color/gray_normal"
         app:space="5dp"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="5dp"
         />
     <TextView
         android:id="@+id/tvName"
