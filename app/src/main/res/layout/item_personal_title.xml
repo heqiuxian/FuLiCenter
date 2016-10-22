@@ -6,7 +6,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/holo_green_light">
+        android:background="@null">
         <ImageView
             android:id="@+id/ivBack"
             android:layout_width="wrap_content"
@@ -18,7 +18,7 @@
             android:id="@+id/tv_common_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="登录"
+            android:text="账户登录"
             android:textSize="25sp"
             android:layout_centerInParent="true"
             />

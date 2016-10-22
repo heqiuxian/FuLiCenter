@@ -186,15 +186,20 @@ public class CategoryChildActivity extends BaseActivity {
                     sortBy=I.SORT_BY_PRICE_DESC;
                     right=getResources().getDrawable(R.mipmap.arrow_order_down);
                 }
-
+                right.setBounds(0,0,right.getIntrinsicWidth(),right.getIntrinsicHeight());
+                btnSortPrice.setCompoundDrawablesRelativeWithIntrinsicBounds(null,null,right,null);
                 priceAsc=!priceAsc;
                 break;
             case R.id.btn_sort_addtime:
                 if(addTimeAsc){
                     sortBy=I.SORT_BY_ADDTIME_ASC;
+                    right=getResources().getDrawable(R.mipmap.arrow_order_up);
                 }else {
                     sortBy=I.SORT_BY_ADDTIME_DESC;
+                    right=getResources().getDrawable(R.mipmap.arrow_order_down);
                 }
+                right.setBounds(0,0,right.getIntrinsicWidth(),right.getIntrinsicHeight());
+                btnSortAddtime.setCompoundDrawablesRelativeWithIntrinsicBounds(null,null,right,null);
                 addTimeAsc=!addTimeAsc;
                 break;
         }

@@ -4,8 +4,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/bj1"
     >
     <include layout="@layout/item_personal_title"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:text="注册福利社"
+        android:textSize="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="40dp"
+        android:textColor="@color/btn_green_pressed"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="有你懂的福利"
+        android:textSize="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="150dp"
+        android:textColor="@color/btn_green_pressed"
+        />
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -98,12 +121,12 @@
         android:id="@+id/btregister_register"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:text="免费注册"
+        android:text="确认注册"
         android:textSize="25sp"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
         android:textColor="@color/holo_red_light"
-        android:background="@drawable/btn_shape"
+        android:background="@null"
         />
 
 </LinearLayout>

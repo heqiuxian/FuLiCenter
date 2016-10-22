@@ -90,7 +90,7 @@ public class RegisterActivity extends BaseActivity {
         }
         String userPassword =etRegisterPassword.getText().toString().trim();
         if(userPassword==null||userPassword.length()==0){
-            etRegisterPassword.setError("请输入密码");
+            etRegisterPassword.setError("密码不能为空");
             return;
         }
         String userAgainpwd =etRegisterAgainpassword.getText().toString().trim();
