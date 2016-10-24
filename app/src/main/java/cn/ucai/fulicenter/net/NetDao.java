@@ -92,12 +92,12 @@ public class NetDao {
      * @param passWord 密码
      * @param listener listener
      */
-    public static void Login(Context context,String userName,String passWord,OkHttpUtils.OnCompleteListener<Result>listener){
-        OkHttpUtils<Result> utils=new OkHttpUtils<>(context);
+    public static void Login(Context context,String userName,String passWord,OkHttpUtils.OnCompleteListener<String>listener){
+        OkHttpUtils<String> utils=new OkHttpUtils<>(context);
         utils.setRequestUrl(I.REQUEST_LOGIN)
                 .addParam(I.User.USER_NAME,userName)
                 .addParam(I.User.PASSWORD,MD5.getMessageDigest(passWord))
-                .targetClass(Result.class)
+                .targetClass(String.class)
                 .execute(listener);
     }
 }

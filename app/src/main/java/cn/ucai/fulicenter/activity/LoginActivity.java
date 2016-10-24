@@ -13,10 +13,12 @@ import butterknife.OnClick;
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.bean.Result;
+import cn.ucai.fulicenter.bean.User;
 import cn.ucai.fulicenter.net.NetDao;
 import cn.ucai.fulicenter.net.OkHttpUtils;
 import cn.ucai.fulicenter.utils.L;
 import cn.ucai.fulicenter.utils.MFGT;
+import cn.ucai.fulicenter.utils.ResultUtils;
 
 public class LoginActivity extends BaseActivity {
 
@@ -71,10 +73,12 @@ public class LoginActivity extends BaseActivity {
         onLogin();
     }
 
+
     private void onLogin() {
-        NetDao.Login(this,etUserName.getText().toString(), etPassword.getText().toString(), new OkHttpUtils.OnCompleteListener<Result>() {
+        NetDao.Login(this,etUserName.getText().toString(), etPassword.getText().toString(), new OkHttpUtils.OnCompleteListener<String>() {
             @Override
-            public void onSuccess(Result result) {
+            public void onSuccess(String s) {
+                Result result= ResultUtils.getResultFromJson(s,User.class);
                 if(result.getRetCode()==0){
                     Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
                 }else if(result.getRetCode()== I.MSG_LOGIN_UNKNOW_USER){
