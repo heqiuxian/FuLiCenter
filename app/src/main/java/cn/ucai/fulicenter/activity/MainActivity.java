@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
                 index = 3;
                 break;
             case R.id.layout_personal_center:
-                if (FuLiCenterApplication.getUseName()==null){
+                if (FuLiCenterApplication.getUser()==null){
                     MFGT.gotoLogin(this);
                 }else {
                     index = 4;

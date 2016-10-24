@@ -10,10 +10,13 @@ import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.bean.Result;
 import cn.ucai.fulicenter.bean.User;
+import cn.ucai.fulicenter.dao.SharePrefrenceUtils;
+import cn.ucai.fulicenter.dao.UserDao;
 import cn.ucai.fulicenter.net.NetDao;
 import cn.ucai.fulicenter.net.OkHttpUtils;
 import cn.ucai.fulicenter.utils.L;
@@ -27,12 +30,14 @@ public class LoginActivity extends BaseActivity {
     EditText etUserName;
     @BindView(R.id.etPassword)
     EditText etPassword;
+    LoginActivity mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         super.onCreate(savedInstanceState);
+        mContext=this;
     }
 
     @Override
@@ -81,6 +86,19 @@ public class LoginActivity extends BaseActivity {
                 Result result= ResultUtils.getResultFromJson(s,User.class);
                 if(result.getRetCode()==0){
                     Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
+
+                    User user= (User) result.getRetData();
+                    UserDao dao=new UserDao(mContext);
+                    boolean isSuccess=dao.saveUser(user);
+                    if(isSuccess){
+                        L.e("isSuccess="+isSuccess);
+                        SharePrefrenceUtils.getInstance(mContext).saveUser(user.getMuserName());
+                        FuLiCenterApplication.setUser(user);
+                        MFGT.finish(mContext);
+                    }else{
+                        Toast.makeText(mContext, "数据库异常", Toast.LENGTH_SHORT).show();
+                    }
+
                 }else if(result.getRetCode()== I.MSG_LOGIN_UNKNOW_USER){
                     Toast.makeText(LoginActivity.this, "账户名不存在", Toast.LENGTH_SHORT).show();
                 }else if(result.getRetCode()==I.MSG_LOGIN_ERROR_PASSWORD){

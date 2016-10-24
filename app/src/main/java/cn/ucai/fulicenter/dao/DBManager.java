@@ -2,6 +2,7 @@ package cn.ucai.fulicenter.dao;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import cn.ucai.fulicenter.bean.User;
 
@@ -38,10 +39,33 @@ public class DBManager {
         }
         return false;
     }
-    public User getUser(String username){
-        return null;
-    }
-    public boolean updataUser(User user){
-        return false;
+
+    public synchronized User getUser(String userName){
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String sql="select * from "+UserDao.USER_TABLE_NAME+" where "+UserDao.USER_COLUMN_NAME +" =?";
+        Cursor c = db.rawQuery(sql, new String[]{userName});
+        while(c.moveToNext()){
+            User user = new User();
+            user.setMuserName(userName);
+            user.setMuserNick(c.getString(c.getColumnIndex(UserDao.USER_COLUMN_NICK)));
+            user.setMavatarId(c.getInt(c.getColumnIndex(UserDao.USER_COLUMN_AVATAR_ID)));
+            user.setMavatarType(c.getInt(c.getColumnIndex(UserDao.USER_COLUMN_AVATAR_TYPE)));
+            user.setMavatarPath(c.getString(c.getColumnIndex(UserDao.USER_COLUMN_AVATAR_PATH)));
+            user.setMavatarSuffix(c.getString(c.getColumnIndex(UserDao.USER_COLUMN_AVATAR_SUFFIX)));
+            user.setMavatarLastUpdateTime(c.getString(c.getColumnIndex(UserDao.USER_COLUMN_AVATAR_LASTUPDATE_TIME)));
+            return user;
+            }
+            return null;
+        }
+    public synchronized boolean updateUser(User user){
+        int result=-1;
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String where=UserDao.USER_COLUMN_NAME+" =?";
+        ContentValues values = new ContentValues();
+        values.put(UserDao.USER_COLUMN_NICK,user.getMuserNick());
+        if(db.isOpen()){
+            result=db.update(UserDao.USER_TABLE_NAME,values,where,new String[]{user.getMuserName()});
+        }
+        return result>0;
     }
 }

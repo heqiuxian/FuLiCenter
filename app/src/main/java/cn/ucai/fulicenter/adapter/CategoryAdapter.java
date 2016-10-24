@@ -76,7 +76,7 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpand, View view, ViewGroup viewGroup) {
         GroupViewHolder holder;
-        L.e("fragment","group=====================");
+     //   L.e("fragment","group=====================");
         if (view == null) {
             view = View.inflate(mContext, R.layout.item_category_group, null);
             holder=new GroupViewHolder(view);
@@ -86,7 +86,7 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
             holder= (GroupViewHolder) view.getTag();
         }
         CategoryGroupBean group=getGroup(groupPosition);
-        L.e("fragment","group="+group.toString());
+     //   L.e("fragment","group="+group.toString());
         if(group!=null){
             ImageLoader.downloadImg(mContext,holder.ivGroupThumb,group.getImageUrl());
             holder.tvGroupName.setText(group.getName());

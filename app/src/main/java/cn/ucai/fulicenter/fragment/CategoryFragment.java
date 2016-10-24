@@ -71,7 +71,7 @@ public class CategoryFragment extends Fragment {
                         ConvertUtils.array2List(result);
                         ArrayList<CategoryGroupBean> groupList=ConvertUtils.array2List(result);
                         mGroupList.addAll(groupList);
-                        L.e("groupList="+groupList.get(0).toString());
+                      //  L.e("groupList="+groupList.get(0).toString());
                         for (int i=0;i<groupList.size();i++){
                             mChildList.add(new ArrayList<CategoryChildBean>());
                             CategoryGroupBean g=groupList.get(i);
