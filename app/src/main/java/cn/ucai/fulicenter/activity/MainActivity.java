@@ -111,10 +111,10 @@ public class MainActivity extends AppCompatActivity {
                 }
         }
         setChecked();
-        switchFragment(index);
+        switchFragment();
     }
     int currentIndex=0;
-    private void switchFragment(int index) {
+    private void switchFragment() {
         if(index==currentIndex){
             return;
         }
@@ -135,5 +135,14 @@ public class MainActivity extends AppCompatActivity {
                 rbs[i].setChecked(false);
             }
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(FuLiCenterApplication.getUser()!=null){
+            index=4;
+        }
+        switchFragment();
     }
 }
