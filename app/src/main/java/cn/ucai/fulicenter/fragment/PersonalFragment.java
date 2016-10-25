@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.activity.MainActivity;
@@ -25,17 +26,18 @@ import cn.ucai.fulicenter.utils.MFGT;
 public class PersonalFragment extends BaseFragment {
     @BindView(R.id.iv_user_avatar)
     ImageView ivUserAvatar;
-    @BindView(R.id.tv_user_name)
-    TextView tvUserName;
+    @BindView(R.id.tv_user_nick)
+    TextView tvUserNick;
 
     MainActivity mContext;
+    User user=null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_personal, container, false);
         ButterKnife.bind(this, layout);
-        mContext= (MainActivity) getActivity();
-        super.onCreateView(inflater,container,savedInstanceState);
+        mContext = (MainActivity) getActivity();
+        super.onCreateView(inflater, container, savedInstanceState);
         return layout;
     }
 
@@ -46,17 +48,32 @@ public class PersonalFragment extends BaseFragment {
 
     @Override
     protected void initData() {
-        User user= FuLiCenterApplication.getUser();
-        if(user==null){
+        user = FuLiCenterApplication.getUser();
+        if (user == null) {
             MFGT.gotoLogin(mContext);
-        }else{
-            ImageLoader.setAvatar(ImageLoader.getAvatarUrl(user),mContext,ivUserAvatar);
-            tvUserName.setText(user.getMuserNick());
+        } else {
+            ImageLoader.setAvatar(ImageLoader.getAvatarUrl(user), mContext, ivUserAvatar);
+            tvUserNick.setText(user.getMuserNick());
         }
     }
 
     @Override
     protected void setListener() {
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        user = FuLiCenterApplication.getUser();
+        if (user != null) {
+            ImageLoader.setAvatar(ImageLoader.getAvatarUrl(user), mContext, ivUserAvatar);
+            tvUserNick.setText(user.getMuserNick());
+        }
+    }
+
+    @OnClick(R.id.tv_center_settings)
+    public void onClick() {
+        MFGT.gotoPersonalSetting(mContext);
     }
 }
