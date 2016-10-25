@@ -34,7 +34,9 @@
         <activity android:name=".activity.BoutiqueDtailActivity" />
         <activity android:name=".activity.CategoryChildActivity" />
         <activity android:name=".activity.LoginActivity" />
-        <activity android:name=".activity.RegisterActivity"></activity>
+        <activity android:name=".activity.RegisterActivity" />
+        <activity android:name=".activity.PersonalSettingActivity" />
+        <activity android:name=".activity.UpdateNickActivity"></activity>
     </application>
 
 </manifest>
