@@ -15,6 +15,7 @@ import butterknife.OnClick;
 import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.bean.MessageBean;
 import cn.ucai.fulicenter.bean.Result;
 import cn.ucai.fulicenter.bean.User;
 import cn.ucai.fulicenter.dao.SharePrefrenceUtils;
@@ -120,7 +121,6 @@ public class PersonalSettingActivity extends BaseActivity {
                 L.e("error="+error);
             }
         });
-
     }
 
     @OnClick({R.id.rl_avatar, R.id.rl_userName, R.id.rl_userNick, R.id.bt_signOut})
@@ -157,5 +157,20 @@ public class PersonalSettingActivity extends BaseActivity {
             tvUserName.setText(user.getMuserName());
             tvUserNick.setText(user.getMuserNick());
         }
+    }
+    private void synCollectsCount(){
+        NetDao.getCollectCount(mContext, user.getMuserName(), new OkHttpUtils.OnCompleteListener<MessageBean>() {
+            @Override
+            public void onSuccess(MessageBean result) {
+                if (result!=null&&result.isSuccess()){
+
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+
+            }
+        });
     }
 }

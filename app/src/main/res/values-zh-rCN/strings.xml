@@ -23,4 +23,5 @@
     <string name="login">登录</string>
     <string name="user_settings">个人设置</string>
     <string name="update_user_nick">更改昵称</string>
+    <string name="collect_shop">收藏的商品</string>
 </resources>

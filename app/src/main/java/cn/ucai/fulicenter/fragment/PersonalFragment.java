@@ -15,7 +15,10 @@ import butterknife.OnClick;
 import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.activity.MainActivity;
+import cn.ucai.fulicenter.bean.MessageBean;
 import cn.ucai.fulicenter.bean.User;
+import cn.ucai.fulicenter.net.NetDao;
+import cn.ucai.fulicenter.net.OkHttpUtils;
 import cn.ucai.fulicenter.utils.ImageLoader;
 import cn.ucai.fulicenter.utils.MFGT;
 
@@ -30,7 +33,9 @@ public class PersonalFragment extends BaseFragment {
     TextView tvUserNick;
 
     MainActivity mContext;
-    User user=null;
+    User user = null;
+    @BindView(R.id.tv_collect_count)
+    TextView tvCollectCount;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -69,11 +74,35 @@ public class PersonalFragment extends BaseFragment {
         if (user != null) {
             ImageLoader.setAvatar(ImageLoader.getAvatarUrl(user), mContext, ivUserAvatar);
             tvUserNick.setText(user.getMuserNick());
+            synCollectsCount();
         }
     }
 
+    private void synCollectsCount() {
+        NetDao.getCollectCount(mContext, user.getMuserName(), new OkHttpUtils.OnCompleteListener<MessageBean>() {
+            @Override
+            public void onSuccess(MessageBean result) {
+                if (result != null && result.isSuccess()) {
+                    tvCollectCount.setText(result.getMsg());
+                } else {
+                    tvCollectCount.setText(String.valueOf(0));
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+                tvCollectCount.setText(String.valueOf(0));
+            }
+        });
+    }
+
     @OnClick(R.id.tv_center_settings)
-    public void onClick() {
+    public void Setting() {
         MFGT.gotoPersonalSetting(mContext);
+    }
+
+    @OnClick(R.id.layout_center_collect)
+    public void Collect() {
+        MFGT.gotoCollect(mContext);
     }
 }
