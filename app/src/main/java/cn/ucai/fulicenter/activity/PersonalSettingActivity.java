@@ -158,7 +158,7 @@ public class PersonalSettingActivity extends BaseActivity {
             tvUserNick.setText(user.getMuserNick());
         }
     }
-    private void synCollectsCount(){
+   /* private void synCollectsCount(){
         NetDao.getCollectCount(mContext, user.getMuserName(), new OkHttpUtils.OnCompleteListener<MessageBean>() {
             @Override
             public void onSuccess(MessageBean result) {
@@ -172,5 +172,5 @@ public class PersonalSettingActivity extends BaseActivity {
 
             }
         });
-    }
+    }*/
 }
