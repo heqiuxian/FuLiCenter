@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <CheckBox
+        android:id="@+id/checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/checkbox_style"
+        android:layout_marginTop="40dp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/nopic"
+        android:id="@+id/iv_picture"
+        android:layout_toEndOf="@+id/checkbox"
+        android:layout_marginTop="20dp"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="$399"
+        android:textSize="20dp"
+        android:id="@+id/tv_money"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="40dp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="xingrendjiendiendineide"
+        android:id="@+id/tv_Name"
+        android:textSize="20dp"
+        android:layout_toEndOf="@+id/iv_picture"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="3"
+        android:textSize="20dp"
+        android:id="@+id/tv_num"
+        android:layout_marginStart="33dp"
+        android:paddingTop="60dp"
+        android:layout_toEndOf="@+id/iv_add" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/add_cart"
+        android:id="@+id/iv_add"
+        android:layout_marginStart="24dp"
+        android:paddingTop="40dp"
+        android:layout_toEndOf="@+id/iv_picture"
+        android:layout_marginTop="20dp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/del_cart"
+        android:id="@+id/iv_del"
+        android:layout_marginStart="30dp"
+        android:paddingTop="60dp"
+        android:layout_toEndOf="@+id/tv_num" />
+
+</RelativeLayout>
