@@ -17,10 +17,14 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.bean.CartBean;
 import cn.ucai.fulicenter.bean.GoodsDetailsBean;
+import cn.ucai.fulicenter.bean.MessageBean;
+import cn.ucai.fulicenter.net.NetDao;
+import cn.ucai.fulicenter.net.OkHttpUtils;
 import cn.ucai.fulicenter.utils.ImageLoader;
 
 
@@ -54,15 +58,16 @@ public class CartAdapter extends RecyclerView.Adapter {
             holder1.tvName.setText(goods.getGoodsName());
             holder1.tvMoney.setText(goods.getCurrencyPrice());
         }
-            holder1.tvNum.setText("(" + cartbean.getCount() + ")");
-            holder1.checkbox.setChecked(false);
-            holder1.checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    cartbean.setChecked(isChecked);
-                    mcontext.sendBroadcast(new Intent(I.BROADCAST_UPDATA_CART));
-                }
-            });
+        holder1.tvNum.setText("(" + cartbean.getCount() + ")");
+        holder1.checkbox.setChecked(false);
+        holder1.checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                cartbean.setChecked(isChecked);
+                mcontext.sendBroadcast(new Intent(I.BROADCAST_UPDATA_CART));
+            }
+        });
+        holder1.ivAdd.setTag(position);
 
     }
 
@@ -70,7 +75,7 @@ public class CartAdapter extends RecyclerView.Adapter {
     public int getItemCount() {
         return mList != null ? mList.size() : 0;
 
-        }
+    }
 
 
     public void initData(ArrayList<CartBean> list) {
@@ -97,6 +102,66 @@ public class CartAdapter extends RecyclerView.Adapter {
         CartViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
+        }
+
+        @OnClick(R.id.iv_add)
+        public void addCart() {
+            final int positon = (int) ivAdd.getTag();
+            CartBean cart = mList.get(positon);
+            NetDao.updateCart(mcontext, cart.getId(), cart.getCount() + 1, new OkHttpUtils.OnCompleteListener<MessageBean>() {
+                @Override
+                public void onSuccess(MessageBean result) {
+                    if (result != null && result.isSuccess()) {
+                        mList.get(positon).setCount(mList.get(positon).getCount() + 1);
+                        mcontext.sendBroadcast(new Intent(I.BROADCAST_UPDATA_CART));
+                        tvNum.setText("(" + (mList.get(positon).getCount()) + ")");
+                    }
+                }
+
+                @Override
+                public void onError(String error) {
+
+                }
+            });
+        }
+
+        @OnClick(R.id.iv_del)
+        public void delCart() {
+            final int position = (int) ivAdd.getTag();
+            CartBean cart = mList.get(position);
+            if (cart.getCount() > 1) {
+                NetDao.updateCart(mcontext, cart.getId(), cart.getCount() - 1, new OkHttpUtils.OnCompleteListener<MessageBean>() {
+                    @Override
+                    public void onSuccess(MessageBean result) {
+                        if (result != null && result.isSuccess()) {
+                            mList.get(position).setCount(mList.get(position).getCount() - 1);
+                            mcontext.sendBroadcast(new Intent(I.BROADCAST_UPDATA_CART));
+                            tvNum.setText("(" + (mList.get(position).getCount()) + ")");
+                        }
+                    }
+
+                    @Override
+                    public void onError(String error) {
+
+                    }
+                });
+            } else {
+                NetDao.deleteCart(mcontext, cart.getId(), new OkHttpUtils.OnCompleteListener<MessageBean>() {
+                    @Override
+                    public void onSuccess(MessageBean result) {
+                        if (result != null && result.isSuccess()) {
+                            mList.remove(position);
+                            mcontext.sendBroadcast(new Intent(I.BROADCAST_UPDATA_CART));
+                            notifyDataSetChanged();
+                        }
+                    }
+
+                    @Override
+                    public void onError(String error) {
+
+                    }
+                });
+            }
         }
     }
 }
