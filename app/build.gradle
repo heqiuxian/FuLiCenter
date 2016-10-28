@@ -47,4 +47,7 @@ dependencies {
     compile files('lib/ShareSDK-Wechat-Core-2.7.8.jar')
     compile files('lib/ShareSDK-Wechat-Favorite-2.7.8.jar')
     compile files('lib/ShareSDK-Wechat-Moments-2.7.8.jar')
+    compile project(':lib:bdwallet_pay_sdk')
+    compile project(':lib:pingpp_one')
+    compile project(':lib:pingpp')
 }
