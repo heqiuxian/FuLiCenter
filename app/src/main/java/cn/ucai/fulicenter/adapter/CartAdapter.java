@@ -14,7 +14,9 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -26,6 +28,7 @@ import cn.ucai.fulicenter.bean.MessageBean;
 import cn.ucai.fulicenter.net.NetDao;
 import cn.ucai.fulicenter.net.OkHttpUtils;
 import cn.ucai.fulicenter.utils.ImageLoader;
+import cn.ucai.fulicenter.utils.MFGT;
 
 
 /**
@@ -102,6 +105,12 @@ public class CartAdapter extends RecyclerView.Adapter {
         CartViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
+        }
+        @OnClick({R.id.iv_picture, R.id.tv_money, R.id.tv_Name})
+        public void gotoDetail() {
+            int position= (int) ivAdd.getTag();
+            CartBean cart=mList.get(position);
+            MFGT.gotoGoodsDtailActivity(mcontext,cart.getGoodsId());
         }
 
         @OnClick(R.id.iv_add)

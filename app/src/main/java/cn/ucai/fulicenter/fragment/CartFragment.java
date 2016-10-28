@@ -34,6 +34,7 @@ import cn.ucai.fulicenter.net.NetDao;
 import cn.ucai.fulicenter.net.OkHttpUtils;
 import cn.ucai.fulicenter.utils.CommonUtils;
 import cn.ucai.fulicenter.utils.L;
+import cn.ucai.fulicenter.utils.MFGT;
 import cn.ucai.fulicenter.utils.ResultUtils;
 import cn.ucai.fulicenter.view.SpaceItemDecoration;
 
@@ -63,6 +64,9 @@ public class CartFragment extends Fragment {
     TextView tvSavePrice;
 
     updateCartReceiver mReceiver;
+    double price=0;
+    String CartId="";
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -159,10 +163,6 @@ public class CartFragment extends Fragment {
         //sumPrice();
     }
 
-    @OnClick(R.id.bt_buy)
-    public void onClick() {
-    }
-
     private void sumPrice(){
         double sumPrice=0;
         double rankPrice=0;
@@ -174,12 +174,14 @@ public class CartFragment extends Fragment {
                 }
                 tvSumPrice.setText("合计: ￥"+rankPrice);
                 tvSavePrice.setText("节省:￥"+(sumPrice-rankPrice));
+                CartId +=c.getId()+",";
             }
         }else {
             setCartLayout(false);
             tvSumPrice.setText("合计:0");
             tvSavePrice.setText("节省:0");
         }
+        price=rankPrice;
     }
     private int getPrice(String price){
         price=price.substring(price.indexOf("￥")+1);
@@ -194,6 +196,14 @@ public class CartFragment extends Fragment {
            // setCartLayout(mList!=null&&mList.size()>0);
         }
     }
+    @OnClick(R.id.bt_buy)
+    public void onClick() {
+        if(price>0&&!CartId.isEmpty()){
+            MFGT.gotoAddress(mContext,CartId);
+        }else {
+            CommonUtils.showLongToast("您还没有选择任何宝贝");
+        }
+    }
 
     @Override
     public void onDestroy() {
@@ -201,5 +211,11 @@ public class CartFragment extends Fragment {
         if(mReceiver!=null){
             mContext.unregisterReceiver(mReceiver);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initData();
     }
 }

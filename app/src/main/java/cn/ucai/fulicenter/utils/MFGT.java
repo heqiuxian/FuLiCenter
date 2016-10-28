@@ -7,6 +7,7 @@ import android.content.Intent;
 import java.util.ArrayList;
 
 import cn.ucai.fulicenter.I;
+import cn.ucai.fulicenter.activity.AddressActivity;
 import cn.ucai.fulicenter.activity.BoutiqueDtailActivity;
 import cn.ucai.fulicenter.activity.CategoryChildActivity;
 import cn.ucai.fulicenter.activity.CollectActivity;
@@ -90,6 +91,11 @@ public class MFGT {
     public static void gotoCollect(Activity context){
         Intent intent=new Intent();
         intent.setClass(context, CollectActivity.class);
+        startActivity(context,intent);
+    }
+    public static void gotoAddress(Activity context,String cartIds){
+        Intent intent=new Intent();
+        intent.setClass(context, AddressActivity.class).putExtra(I.Cart.ID,cartIds);
         startActivity(context,intent);
     }
 

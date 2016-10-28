@@ -193,10 +193,27 @@ public class NetDao {
                 .execute(listener);
     }
 
+    /**
+     * 减少购物车商品数量或删除
+     */
     public static void deleteCart(Context context, int cartId, OkHttpUtils.OnCompleteListener<MessageBean> listener){
         OkHttpUtils<MessageBean> utils = new OkHttpUtils<>(context);
         utils.setRequestUrl(I.REQUEST_DELETE_CART)
                 .addParam(I.Cart.ID,String.valueOf(cartId))
+                .targetClass(MessageBean.class)
+                .execute(listener);
+    }
+
+    /**
+     *添加到购物车
+     */
+    public static void addCart(Context context,String username,int goodsId,int count,boolean isChecked, OkHttpUtils.OnCompleteListener<MessageBean>listener){
+        OkHttpUtils<MessageBean> utils=new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_ADD_CART)
+                .addParam(I.Cart.USER_NAME,username)
+                .addParam(I.Cart.GOODS_ID,String.valueOf(goodsId))
+                .addParam(I.Cart.COUNT,String.valueOf(count))
+                .addParam(I.Cart.IS_CHECKED,String.valueOf(isChecked))
                 .targetClass(MessageBean.class)
                 .execute(listener);
     }
