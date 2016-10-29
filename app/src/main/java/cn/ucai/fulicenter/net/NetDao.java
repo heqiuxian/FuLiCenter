@@ -194,7 +194,7 @@ public class NetDao {
     }
 
     /**
-     * 减少购物车商品数量或删除
+     * 减少购物车商品删除
      */
     public static void deleteCart(Context context, int cartId, OkHttpUtils.OnCompleteListener<MessageBean> listener){
         OkHttpUtils<MessageBean> utils = new OkHttpUtils<>(context);

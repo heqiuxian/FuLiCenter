@@ -166,15 +166,16 @@ public class CartFragment extends Fragment {
     private void sumPrice(){
         double sumPrice=0;
         double rankPrice=0;
+        CartId="";
         if(mList!=null&&mList.size()>0){
             for (CartBean c:mList){
                 if(c.isChecked()){
                   sumPrice +=getPrice( c.getGoods().getCurrencyPrice())*c.getCount();
                     rankPrice += getPrice(c.getGoods().getRankPrice())*c.getCount();
+                    CartId +=c.getId()+",";
                 }
                 tvSumPrice.setText("合计: ￥"+rankPrice);
                 tvSavePrice.setText("节省:￥"+(sumPrice-rankPrice));
-                CartId +=c.getId()+",";
             }
         }else {
             setCartLayout(false);
@@ -184,14 +185,13 @@ public class CartFragment extends Fragment {
         price=rankPrice;
     }
     private int getPrice(String price){
-        price=price.substring(price.indexOf("￥")+1);
-        return Integer.parseInt(price);
+        String str=price.substring(price.indexOf("￥")+1);
+        return Integer.parseInt(str);
     }
     class updateCartReceiver extends BroadcastReceiver{
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            L.e("你是不是点我了");
             sumPrice();
            // setCartLayout(mList!=null&&mList.size()>0);
         }
@@ -199,7 +199,9 @@ public class CartFragment extends Fragment {
     @OnClick(R.id.bt_buy)
     public void onClick() {
         if(price>0&&!CartId.isEmpty()){
+            L.e("＞＞＞＞＞＞＞＞＞＞＞＞＞＞＞＞＞＞＞＞CartId=="+CartId);
             MFGT.gotoAddress(mContext,CartId);
+            CartId="";
         }else {
             CommonUtils.showLongToast("您还没有选择任何宝贝");
         }

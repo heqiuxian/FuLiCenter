@@ -15,6 +15,7 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
 import butterknife.BindView;
@@ -24,11 +25,13 @@ import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.bean.CartBean;
+import cn.ucai.fulicenter.bean.MessageBean;
 import cn.ucai.fulicenter.bean.User;
 import cn.ucai.fulicenter.net.NetDao;
 import cn.ucai.fulicenter.net.OkHttpUtils;
 import cn.ucai.fulicenter.utils.CommonUtils;
 import cn.ucai.fulicenter.utils.L;
+import cn.ucai.fulicenter.utils.MFGT;
 import cn.ucai.fulicenter.utils.ResultUtils;
 
 public class AddressActivity extends BaseActivity implements PaymentHandler{
@@ -42,8 +45,8 @@ public class AddressActivity extends BaseActivity implements PaymentHandler{
     @BindView(R.id.tv_sumPrice)
     TextView tvSumPrice;
     String cartId="";
-    User user=null;
-    ArrayList<CartBean> mList=null;
+    User user;
+    ArrayList<CartBean> mList;
     String[] ids=new String[]{};
     double rankPrice=0;
 
@@ -51,11 +54,11 @@ public class AddressActivity extends BaseActivity implements PaymentHandler{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_address);
         ButterKnife.bind(this);
         mContext = this;
         mList=new ArrayList<>();
+        super.onCreate(savedInstanceState);
 
         //设置需要使用的支付方式
         PingppOne.enableChannels(new String[]{"wx", "alipay", "upacp", "bfb", "jdpay_wap"});
@@ -80,6 +83,7 @@ public class AddressActivity extends BaseActivity implements PaymentHandler{
             finish();
         }
         ids=cartId.split(",");
+        L.e(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+ Arrays.toString(ids));
         getOrderList();
     }
 
@@ -133,23 +137,79 @@ public class AddressActivity extends BaseActivity implements PaymentHandler{
         PingppOne.showPaymentChannels(getSupportFragmentManager(), bill.toString(), URL, this);
     }
 
+
+
     @Override
     public void handlePaymentResult(Intent data) {
-        CommonUtils.showLongToast("爷给钱了!!!!!");
+        if (data != null) {
+
+            // result：支付结果信息
+            // code：支付结果码
+            //-2:用户自定义错误
+            //-1：失败
+            // 0：取消
+            // 1：成功
+            // 2:应用内快捷支付支付结果
+
+            if (data.getExtras().getInt("code") != 2) {
+                PingppLog.d(data.getExtras().getString("result") + "  " + data.getExtras().getInt("code"));
+            } else {
+                String result = data.getStringExtra("result");
+                try {
+                    JSONObject resultJson = new JSONObject(result);
+                    if (resultJson.has("error")) {
+                        result = resultJson.optJSONObject("error").toString();
+                    } else if (resultJson.has("success")) {
+                        result = resultJson.optJSONObject("success").toString();
+                    }
+                    PingppLog.d("result::" + result);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            int resultCode=data.getExtras().getInt("code");
+            L.e(">>>>>>>>>>>支付成功="+resultCode);
+            switch (resultCode){
+                case 1:
+                    CommonUtils.showLongToast(R.string.pingpp_title_activity_success);
+                    paySuccess();
+                    break;
+                case -1:
+                    CommonUtils.showLongToast(R.string.pingpp_pay_failed);
+                    break;
+            }
+        }
     }
+
+    private void paySuccess() {
+        // L.e("<><><><><><><<><>"+cartId);
+        for (String id:ids) {
+            NetDao.deleteCart(mContext, Integer.valueOf(id), new OkHttpUtils.OnCompleteListener<MessageBean>() {
+                @Override
+                public void onSuccess(MessageBean result) {
+                    L.e("删除购物车商品成功" + result.isSuccess());
+                }
+
+                @Override
+                public void onError(String error) {
+
+                }
+            });
+        }
+        finish();
+    }
+
 
     public void getOrderList() {
         NetDao.downloadcarts(mContext, user.getMuserName(), new OkHttpUtils.OnCompleteListener<String>() {
             @Override
             public void onSuccess(String s) {
                 ArrayList<CartBean> list= ResultUtils.getCartFromJson(s);
-                L.e("list有没有拿到东西啊>>"+list.toString());
                 if(list==null||list.size()==0){
                     finish();
                 }else {
                     mList.addAll(list);
                     sumPrice();
-                    L.e("sumPrice="+mList.toString());
                 }
             }
             @Override
@@ -161,14 +221,10 @@ public class AddressActivity extends BaseActivity implements PaymentHandler{
     private void sumPrice() {
         rankPrice=0;
         if(mList!=null&&mList.size()>0) {
-            L.e("mList>>>>>>"+mList.toString());
             for (CartBean c : mList) {
-                L.e("c.id+"+c.getId());
                 for (String id :ids) {
-                    L.e("orderID="+id);
                     if (id.equals(String.valueOf(c.getId()))) {
-                        rankPrice = getPrice(c.getGoods().getRankPrice()) * c.getCount();
-                        L.e("rankPrice>>>>>>>>"+rankPrice);
+                        rankPrice += getPrice(c.getGoods().getRankPrice()) * c.getCount();
                     }
                 }
             }
@@ -177,6 +233,6 @@ public class AddressActivity extends BaseActivity implements PaymentHandler{
     }
     private int getPrice(String price){
         price=price.substring(price.indexOf("￥")+1);
-        return Integer.parseInt(price);
+        return Integer.valueOf(price);
     }
 }

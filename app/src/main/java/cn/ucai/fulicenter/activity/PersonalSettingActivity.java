@@ -78,13 +78,15 @@ public class PersonalSettingActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         L.e("onActivityResult,requestCode="+requestCode+",resultCode="+resultCode);
+        if(requestCode== I.REQUEST_CODE_NICK){
+            Toast.makeText(mContext, "修改昵称成功", Toast.LENGTH_SHORT).show();
+            return;
+        }
         if(resultCode!=RESULT_OK){
             return;
         }
         mOnSetAvatarListener.setAvatar(requestCode,data,ivUserAvatar);
-        if(requestCode== I.REQUEST_CODE_NICK){
-            Toast.makeText(mContext, "修改昵称成功", Toast.LENGTH_SHORT).show();
-        }
+
         if(requestCode==OnSetAvatarListener.REQUEST_CROP_PHOTO){
             updateAvatar();
         }

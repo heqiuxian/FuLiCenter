@@ -25,6 +25,7 @@ import cn.ucai.fulicenter.bean.User;
 import cn.ucai.fulicenter.net.NetDao;
 import cn.ucai.fulicenter.net.OkHttpUtils;
 import cn.ucai.fulicenter.utils.CommonUtils;
+import cn.ucai.fulicenter.utils.L;
 import cn.ucai.fulicenter.utils.MFGT;
 import cn.ucai.fulicenter.view.FlowIndicator;
 import cn.ucai.fulicenter.view.SlideAutoLoopView;
@@ -61,11 +62,11 @@ public class GoodsDtailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_goods_dtail);
         mContext = this;
         ButterKnife.bind(this);
         initData();
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -234,21 +235,27 @@ public class GoodsDtailActivity extends AppCompatActivity {
 
     @OnClick(R.id.ivCart)
     public void addCart() {
-        User user=FuLiCenterApplication.getUser();
-        NetDao.addCart(mContext, user.getMuserName(), goodsID, 1, false, new OkHttpUtils.OnCompleteListener<MessageBean>() {
-            @Override
-            public void onSuccess(MessageBean result) {
-                if(result!=null&&result.isSuccess()){
-                    CommonUtils.showLongToast("成功添加到购物车");
-                }else {
+        User user = FuLiCenterApplication.getUser();
+        L.e("user>>>>>>>" + user);
+        if (user == null) {
+            MFGT.gotoLogin(mContext);
+        }else
+        {
+            NetDao.addCart(mContext, user.getMuserName(), goodsID, 1, false, new OkHttpUtils.OnCompleteListener<MessageBean>() {
+                @Override
+                public void onSuccess(MessageBean result) {
+                    if (result != null && result.isSuccess()) {
+                        CommonUtils.showLongToast("成功添加到购物车");
+                    } else {
+                        CommonUtils.showLongToast("添加失败");
+                    }
+                }
+
+                @Override
+                public void onError(String error) {
                     CommonUtils.showLongToast("添加失败");
                 }
-            }
-
-            @Override
-            public void onError(String error) {
-                CommonUtils.showLongToast("添加失败");
-            }
-        });
+            });
+        }
     }
 }
